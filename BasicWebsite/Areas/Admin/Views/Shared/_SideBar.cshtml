@@ -1,0 +1,27 @@
+﻿<div class="col-sm-3 col-md-2 sidebar">
+    <ul class="nav nav-sidebar">
+        <li class="sub-header"><strong>Content Manager</strong></li>
+        <li><a href=@Url.Action("Index","Dashboard",new{@area="Admin"})>Dashboard</a></li>
+        <li><a href="#">Reports</a></li>
+        <li><a href="#">Analytics</a></li>
+        <li><a href=@Url.Action("Index","Event",new{@area="Admin"})>Event</a></li>
+    </ul>
+    <ul class="nav nav-sidebar">
+        <li class="sub-header"><strong>User Manager</strong></li>
+        <li><a href=@Url.Action("AllUsers","Account",new{@area="Admin"})>User</a></li>
+        <li><a href=@Url.Action("AllRoles","Account",new{@area="Admin"})>Role</a></li>
+    </ul>
+</div>
+@Scripts.Render("~/bundles/jquery")
+<script>
+    $(document).ready(function () {
+        var menuActive = '@ViewBag.MenuActive';
+        if (menuActive != null) {
+            $('.sidebar').find('a').each(function () {
+                if ($(this).text() == menuActive) {
+                    $(this).closest('li').addClass('active');
+                }
+            });
+        }
+    });
+</script>

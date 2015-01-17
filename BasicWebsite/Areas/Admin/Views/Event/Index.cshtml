@@ -1,0 +1,201 @@
+﻿@model IEnumerable<BasicWebsite.Models.EventModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    ViewBag.MenuActive = "Event";
+}
+@section scripts{
+    <script>
+        $(document).ready(function () {
+
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+                defaultDate: moment(),
+                editable: true,
+                eventLimit: true, // allow "more" link when too many events
+                eventRender: function (event, element) {
+                    element.tooltip({
+                        title: event.description
+                    });
+                    if (moment(event.start, 'YYYY-MM-DD').diff(moment(), 'days') > 0) {
+                        $('<span class="glyphicon glyphicon-bell" style="margin-right:5px;"></span>').prependTo($(element).find('.fc-content').first());
+                        $(element).css('background-color', '#d9edf7');
+                        $(element).css('color', '#31708f');
+                        // $(element).css('font-weight', 'bold');
+                        $(element).css('border-color', '#bce8f1');
+                    }
+                    else if (moment(event.end, 'YYYY-MM-DD').diff(moment(), 'days') < 0) {
+                        $('<span class="glyphicon glyphicon-ok" style="margin-right:5px;"></span>').prependTo($(element).find('.fc-content').first());
+                        $(element).css('background-color', '#dff0d8');
+                        $(element).css('color', '#3c763d');
+                        // $(element).css('font-weight', 'bold');
+                        $(element).css('border-color', '#d6e9c6');
+                    } else {
+                        $('<span class="glyphicon glyphicon-bullhorn" style="margin-right:5px;"></span>').prependTo($(element).find('.fc-content').first());
+                        $(element).css('background-color', '#f2dede');
+                        $(element).css('color', '#A94442');
+                        // $(element).css('font-weight', 'bold');
+                        $(element).css('border-color', '#ebccd1');
+                    }
+                }
+            });
+
+            var dateInput = moment();
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: '@Url.Action("GetAllEvent", "Event")',
+                async: false,
+                data: {
+                    date: moment().format('DD/MM/YYYY')
+                },
+                dataType: "json",
+                success: function (response) {
+                    if (response != null) {
+                        $('#calendar').fullCalendar('removeEvents');
+                        $('#calendar').fullCalendar('addEventSource', response);
+                        $('#calendar').fullCalendar('rerenderEvents');
+                    }
+                }
+            });
+            $('body').on('click', 'button.fc-next-button', function () {
+                dateInput = dateInput.add(1, 'months');
+                var startDate = dateInput.format('DD/MM/YYYY');
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    url: '@Url.Action("GetAllEvent", "Event")',
+                    async: false,
+                    data: {
+                        date: startDate
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        if (response != null) {
+                            $('#calendar').fullCalendar('removeEvents');
+                            $('#calendar').fullCalendar('addEventSource', response);
+                            $('#calendar').fullCalendar('rerenderEvents');
+                        }
+                    }
+                });
+            });
+
+            $('body').on('click', 'button.fc-prev-button', function () {
+                dateInput = dateInput.subtract(1, 'months');
+                var startDate = dateInput.format('DD/MM/YYYY');
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    url: '@Url.Action("GetAllEvent", "Event")',
+                    async: false,
+                    data: {
+                        date: startDate
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        if (response != null) {
+                            $('#calendar').fullCalendar('removeEvents');
+                            $('#calendar').fullCalendar('addEventSource', response);
+                            $('#calendar').fullCalendar('rerenderEvents');
+                        }
+                    }
+                });
+            });
+
+            $('.fc-today-button').on('click', function () {
+                dateInput = moment();
+                var startDate = dateInput.format('DD/MM/YYYY');
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    url: '@Url.Action("GetAllEvent", "Event")',
+                    async: false,
+                    data: {
+                        date: moment().format('DD/MM/YYYY')
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        if (response != null) {
+                            $('#calendar').fullCalendar('removeEvents');
+                            $('#calendar').fullCalendar('addEventSource', response);
+                            $('#calendar').fullCalendar('rerenderEvents');
+                        }
+                    }
+                });
+            });
+
+        });
+    </script>
+}
+<div id="calendar"></div>
+<br />
+<p>
+    @Html.ActionLink("Add Event", "Create","Event", new {@class="btn btn-success btn-sm" })
+</p>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th class="col-sm-1">
+                Status
+            </th>
+            <th class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Organizer)
+            </th>
+            <th class="col-sm-1">
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th class="col-sm-1">
+                Start Date
+            </th>
+            <th class="col-sm-1">
+                End Date
+            </th>
+            <th class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Organizer)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    @Html.Raw(Convert.ToDateTime(item.StartDate).ToString("dd/MM/yyyy"))
+                </td>
+                <td>
+                    @Html.Raw(Convert.ToDateTime(item.EndDate).ToString("dd/MM/yyyy"))
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>

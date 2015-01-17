@@ -1,0 +1,167 @@
+﻿@model BasicWebsite.Models.EventModel
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    ViewBag.MenuActive = "Event";
+}
+
+<h2>Create</h2>
+<hr />
+@using (Html.BeginForm("Create", "Event", FormMethod.Post, new {@id="newForm", @class = "form-horizontal", role = "form" })) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true)
+        <div class="form-group">
+            @Html.LabelFor(model => model.Title, new { @class = "col-md-2" })
+            <div class="col-md-4">
+                @Html.TextBoxFor(model => model.Title, new { @class = "form-control  input-sm" })
+                <label for="Title" class="error"></label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Organizer, new { @class = "col-md-2" })
+            <div class="col-md-4">
+                @Html.TextBoxFor(model => model.Organizer, new { @class = "form-control  input-sm" })
+                <label for="Organizer" class="error"></label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Type, new { @class = "col-md-2" })
+            <div class="col-md-4">
+                @Html.TextBoxFor(model => model.Type, new { @class = "form-control  input-sm" })
+                <label for="Type" class="error"></label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.StartDate, new { @class = "col-md-2" })
+            <div class="col-md-4">
+                <div class='input-group date col-sm-6' id='startDate'>
+                    @Html.TextBoxFor(model => model.StartDate, new { @class = "form-control  input-sm", @data_date_format = "DD/MM/YYYY" })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+                <label for="StartDate" class="error"></label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.EndDate, new { @class = "col-md-2" })
+            <div class="col-md-4">
+                <div class='input-group date col-sm-6' id='endDate'>
+                    @Html.TextBoxFor(model => model.EndDate, new { @class = "form-control input-sm", @data_date_format = "DD/MM/YYYY" })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+                <label for="EndDate" class="error"></label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, new { @class = "col-md-2" })
+            <div class="col-md-4">
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control",@rows="4" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default  btn-sm" />
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts{
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#startDate').datetimepicker({
+                pickTime:false
+            });
+            $('#endDate').datetimepicker({
+                pickTime: false
+            });
+
+            $("#newForm").validate({
+                onkeyup: true,
+                rules: {
+                    Title: {
+                        required: true,
+                        minLength: true
+                    },
+                    Organizer: {
+                        required: true,
+                        minLength: true
+                    },
+                    Type: {
+                        required: true,
+                        minLength: true
+                    },
+                    StartDate: {
+                        required: true,
+                        dateFormat: true
+                    },
+                    EndDate: {
+                        required: true,
+                        dateFormat: true,
+                        greaterThan: "#StartDate"
+                    }
+                },
+                messages: {
+                    Title: {
+                        required: "Required Field.",
+                        minLength: "Type least 10 characters."
+                    },
+                    Organizer: {
+                        required: "Required Field.",
+                        minLength: "Type least 10 characters."
+                    },
+                    Type: {
+                        required: "Required Field.",
+                        minLength: "Type least 10 characters."
+                    },
+                    StartDate: {
+                        required: "Required Field.",
+                        dateFormat: "Not a date."
+                    },
+                    EndDate: {
+                        required: "Required Field.",
+                        dateFormat: "Not a date.",
+                        greaterThan: "End date must be great than Start Date.",
+                    },
+                }
+            });
+
+            $.validator.addMethod("dateFormat",
+                  function (value, element) {
+                      return moment(value, "DD/MM/YYYY", true).isValid();
+                  }, false);
+
+            $.validator.addMethod("greaterThan",
+                  function (value, element, params) {
+                      var startDate = moment($(params).val(), "DD/MM/YYYY");
+                      var endDate = moment(value, "DD/MM/YYYY");
+                      return (endDate > startDate);
+                  }, false);
+
+            $.validator.addMethod("minLength",
+                  function (value, element) {
+                      return (value.trim().length >= 10);
+                  }, false);
+            $("#startDate").on("dp.change", function (e) {
+                $("#newForm").validate().element('#StartDate');
+            });
+            $("#endDate").on("dp.change", function (e) {
+                $("#newForm").validate().element('#EndDate');
+            });
+        });
+    </script>
+}

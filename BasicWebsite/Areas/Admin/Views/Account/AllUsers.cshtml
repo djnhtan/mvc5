@@ -1,0 +1,44 @@
+﻿@model IEnumerable<BasicWebsite.Areas.Admin.Models.ApplicationUser>
+@{
+    ViewBag.Title = "All Users";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    ViewBag.MenuActive = "User";
+}
+
+<h2>All Users</h2>
+<hr />
+<table class="table table-striped" style="width:50%;">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>User Name</th>
+            <th>Sex</th>
+            <th>Email</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int i = 0;
+        }
+        @foreach (var user in Model)
+        {
+            i++;
+            <tr>
+                <td>@i</td>
+                <td>@Html.DisplayFor(modelItem => user.UserName)</td>
+                <td>@Html.DisplayFor(modelItem => user.Sex)</td>
+                <td>@Html.DisplayFor(modelItem => user.Email)</td>
+                <td>
+                    <a href=@Url.Action("EditRole", "Account", new { roleName = user.UserName })><span class="fa fa-edit"></span></a> |
+                    <a href=@Url.Action("RemoveRole", "Account", new { roleName = user.UserName })><span class="fa fa-remove"></span></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<hr />
+<a class="btn btn-success btn-sm" href=@Url.Action("Register", "Account", new { area = "Admin" })>
+    Register
+</a>
+

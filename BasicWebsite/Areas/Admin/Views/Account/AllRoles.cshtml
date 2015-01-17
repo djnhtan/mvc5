@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>
+@{
+    ViewBag.Title = "All Roles";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    ViewBag.MenuActive = "Role";
+}
+
+<h2>All Roles</h2>
+<hr />
+<table class="table table-striped" style="width:50%;">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Role Name</th>
+            <th>Users in Role</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int i = 0;
+        }
+        @foreach (var model in Model)
+        {
+            i++;
+            <tr>
+                <td>@i</td>
+                <td>@Html.DisplayFor(modelItem=>model.Name)</td>
+                <td></td>
+                <td>
+                    <a href=@Url.Action("EditRole", "Account", new {roleName = model.Name })><span class="fa fa-edit"></span></a> |
+                    <a href=@Url.Action("RemoveRole", "Account", new {roleName = model.Name })><span class="fa fa-remove"></span></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<hr />
+<a class="btn btn-success btn-sm" href=@Url.Action("CreateRole", "Account", new { area = "Admin" })>
+    Create
+</a>
