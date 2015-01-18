@@ -112,7 +112,8 @@
                     EndDate: {
                         required: true,
                         dateFormat: true,
-                        greaterThan: "#StartDate"
+                        greaterThan: "#StartDate",
+                        eventDuration: "#StartDate"
                     }
                 },
                 messages: {
@@ -136,6 +137,7 @@
                         required: "Required Field.",
                         dateFormat: "Not a date.",
                         greaterThan: "End date must be great than Start Date.",
+                        eventDuration: "Event must be time duration less than or equal 7 days."
                     },
                 }
             });
@@ -150,6 +152,13 @@
                       var startDate = moment($(params).val(), "DD/MM/YYYY");
                       var endDate = moment(value, "DD/MM/YYYY");
                       return (endDate > startDate);
+                  }, false);
+
+            $.validator.addMethod("eventDuration",
+                  function (value, element, params) {
+                      var startDate = moment($(params).val(), "DD/MM/YYYY");
+                      var endDate = moment(value, "DD/MM/YYYY");
+                      return (endDate.diff(startDate, 'days') <= 7);
                   }, false);
 
             $.validator.addMethod("minLength",
