@@ -5,6 +5,7 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     ViewBag.MenuActive = "Event";
 }
+@Styles.Render("~/Content/jtable")
 @section scripts{
     <script>
         $(document).ready(function () {
@@ -130,73 +131,61 @@
                 });
             });
 
+            $('#EventTable').jtable({
+                title: 'The Event List',
+                paging: true,
+                pageSize: 10,
+                sorting: true,
+                defaultSorting: 'ID ASC',
+                selecting: true, //Enable selecting
+                multiselect: true, //Allow multiple selecting
+                selectingCheckboxes: true, //Show checkboxes on first column
+                actions: {
+                    listAction: '@Url.Action("EventList", "Event", new { area= "Admin" })'
+                },
+                fields: {
+                    ID: {
+                        title: 'ID',
+                        width: '10%'
+                    },
+                    Title: {
+                        title: 'Title',
+                        width: '40%'
+                    },
+                    Organizer: {
+                        title: 'Organizer',
+                        width: '25%'
+                    },
+                    Type: {
+                        title: 'Type',
+                        width: '25%'
+                    }
+                }
+            });
+
+            //Load person list from server
+            $('#EventTable').jtable('load');
+
         });
     </script>
 }
-<div id="calendar"></div>
-<br />
-<p>
-    @Html.ActionLink("Add Event", "Create","Event", new {@class="btn btn-success btn-sm" })
-</p>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th class="col-sm-1">
-                Status
-            </th>
-            <th class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Organizer)
-            </th>
-            <th class="col-sm-1">
-                @Html.DisplayNameFor(model => model.Type)
-            </th>
-            <th class="col-sm-1">
-                Start Date
-            </th>
-            <th class="col-sm-1">
-                End Date
-            </th>
-            <th class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Status)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Organizer)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Type)
-                </td>
-                <td>
-                    @Html.Raw(Convert.ToDateTime(item.StartDate).ToString("dd/MM/yyyy"))
-                </td>
-                <td>
-                    @Html.Raw(Convert.ToDateTime(item.EndDate).ToString("dd/MM/yyyy"))
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.ID }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.ID })
-                </td>
-            </tr>
-        }
-    </tbody>
+<div class="row">
+    <div role="tabpanel">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Calendar</a></li>
+            <li role="presentation"><a href="#eventlist" aria-controls="eventlist" role="tab" data-toggle="tab">Table</a></li>
+        </ul>
 
-</table>
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="home">
+                <div id="calendar"></div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="eventlist">
+                <div id="EventTable"></div>
+            </div>
+        </div>
+
+    </div>
+</div>

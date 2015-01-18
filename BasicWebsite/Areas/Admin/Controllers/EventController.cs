@@ -139,6 +139,78 @@ namespace BasicWebsite.Areas.Admin.Controllers
                                                  }), JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public JsonResult EventList(int jtStartIndex = 0, int jtPageSize = 0, string jtSorting = null)
+        {
+            try
+            {
+                var listEvent = new List<EventTable>();
+                IQueryable<EventModel> events;
+                var sord = string.Empty;
+                var order = string.Empty;
+                if (!string.IsNullOrEmpty(jtSorting))
+                {
+                    sord = jtSorting.Split(' ')[0];
+                    order = jtSorting.Split(' ')[1];
+                    if (order.Equals("ASC"))
+                    {
+                        switch (sord)
+                        {
+                            case "Title":
+                                events = db.EvenModels.OrderBy(e => e.Title).Skip(jtStartIndex).Take(jtPageSize);
+                                break;
+                            case "Organizer":
+                                events = db.EvenModels.OrderBy(e => e.Organizer).Skip(jtStartIndex).Take(jtPageSize);
+                                break;
+                            case "Type":
+                                events = db.EvenModels.OrderBy(e => e.Type).Skip(jtStartIndex).Take(jtPageSize);
+                                break;
+                            default:
+                                events = db.EvenModels.OrderBy(e => e.ID).Skip(jtStartIndex).Take(jtPageSize);
+                                break;
+
+                        }
+                    }
+                    else
+                    {
+                        switch (sord)
+                        {
+                            case "Title":
+                                events = db.EvenModels.OrderByDescending(e => e.Title).Skip(jtStartIndex).Take(jtPageSize);
+                                break;
+                            case "Organizer":
+                                events = db.EvenModels.OrderByDescending(e => e.Organizer).Skip(jtStartIndex).Take(jtPageSize);
+                                break;
+                            case "Type":
+                                events = db.EvenModels.OrderByDescending(e => e.Type).Skip(jtStartIndex).Take(jtPageSize);
+                                break;
+                            default:
+                                events = db.EvenModels.OrderByDescending(e => e.ID).Skip(jtStartIndex).Take(jtPageSize);
+                                break;
+
+                        }
+                    }
+                }
+                else
+                {
+                    events = db.EvenModels.OrderBy(e => e.ID).Skip(jtStartIndex).Take(jtPageSize);
+                }
+                listEvent = events.Select(e => new EventTable
+                {
+                    ID=e.ID.ToString(),
+                    Title=e.Title,
+                    Organizer=e.Organizer,
+                    Type=e.Type
+                }).ToList();
+                int eventCount = db.EvenModels.ToList().Count();
+                return Json(new { Result = "OK", Records = listEvent, TotalRecordCount = eventCount });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        } 
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -147,5 +219,13 @@ namespace BasicWebsite.Areas.Admin.Controllers
             }
             base.Dispose(disposing);
         }
+    }
+
+    public class EventTable
+    {
+        public string ID { get; set; }
+        public string Title { get; set; }
+        public string Organizer { get; set; }
+        public string Type { get; set; }
     }
 }

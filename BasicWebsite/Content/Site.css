@@ -109,16 +109,19 @@ body {
  */
 
 .main {
-  padding: 20px;
+  padding: 10px;
 }
 @media (min-width: 768px) {
   .main {
-    padding-right: 40px;
-    padding-left: 40px;
+    padding-right: 10px;
+    padding-left: 10px;
   }
 }
 .main .page-header {
   margin-top: 0;
+}
+.tab-pane{
+    padding-top:10px !important;
 }
 
 
@@ -148,4 +151,11 @@ label.error {
 
 input.error {
     border:1px solid #D9534F;
+}
+
+.jtable-goto-page select{
+    color:#000;
+}
+.jtable-page-size-change select{
+    color:#000;
 }
