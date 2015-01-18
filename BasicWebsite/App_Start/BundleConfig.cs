@@ -23,6 +23,8 @@ namespace BasicWebsite
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/moment.js",
                       "~/Scripts/bootstrap-datetimepicker.js",
+                      "~/Scripts/cazary.js",
+                      "~/Scripts/cazary-legacy.js",
                       "~/Scripts/respond.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/calendar").Include(
@@ -32,6 +34,7 @@ namespace BasicWebsite
                       "~/Content/bootstrap.css",
                       "~/Content/bootstrap-datetimepicker.css",
                       "~/Content/font-awesome.css",
+                      "~/Content/themes/flat/style.css",
                       "~/Content/site.css"));
 
             bundles.Add(new StyleBundle("~/Content/calendar").Include(

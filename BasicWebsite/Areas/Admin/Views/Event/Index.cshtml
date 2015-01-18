@@ -20,7 +20,8 @@
                 eventLimit: true, // allow "more" link when too many events
                 eventRender: function (event, element) {
                     element.tooltip({
-                        title: event.description
+                        title: event.description,
+                        html: true
                     });
                     if (moment(event.start, 'YYYY-MM-DD').diff(moment(), 'days') > 0) {
                         $('<span class="glyphicon glyphicon-bell" style="margin-right:5px;"></span>').prependTo($(element).find('.fc-content').first());

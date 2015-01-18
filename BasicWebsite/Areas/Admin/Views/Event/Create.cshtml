@@ -66,8 +66,8 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.Description, new { @class = "col-md-2" })
-            <div class="col-md-4">
-                @Html.TextAreaFor(model => model.Description, new { @class = "form-control",@rows="4" })
+            <div class="col-md-8">
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control",@rows="8"})
             </div>
         </div>
 
@@ -171,6 +171,9 @@
             $("#endDate").on("dp.change", function (e) {
                 $("#newForm").validate().element('#EndDate');
             });
+            $('#Description').cazary({
+                commands: "FULL"
+            })
         });
     </script>
 }
