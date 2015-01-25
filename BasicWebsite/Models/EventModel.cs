@@ -54,5 +54,7 @@ namespace BasicWebsite.Models
         public DbSet<EventModel> EvenModels { get; set; }
 
         public DbSet<NewsModel> NewsModels { get; set; }
+
+        public DbSet<CompanyModel> CompanyModels { get; set; }
     }
 }

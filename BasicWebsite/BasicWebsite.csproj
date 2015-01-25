@@ -165,6 +165,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AccountController.cs" />
+    <Compile Include="Areas\Admin\Controllers\CompanyController.cs" />
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Admin\Controllers\EventController.cs" />
     <Compile Include="Areas\Admin\Controllers\NewsController.cs" />
@@ -175,6 +176,14 @@
     <Compile Include="BasicWebDbContextMigrations\201412161852385_InitialCreate1.cs" />
     <Compile Include="BasicWebDbContextMigrations\201412161852385_InitialCreate1.Designer.cs">
       <DependentUpon>201412161852385_InitialCreate1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BasicWebDbContextMigrations\201501251749009_AddCompanyTable.cs" />
+    <Compile Include="BasicWebDbContextMigrations\201501251749009_AddCompanyTable.Designer.cs">
+      <DependentUpon>201501251749009_AddCompanyTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BasicWebDbContextMigrations\201501251755175_UpdateCompanyTable.cs" />
+    <Compile Include="BasicWebDbContextMigrations\201501251755175_UpdateCompanyTable.Designer.cs">
+      <DependentUpon>201501251755175_UpdateCompanyTable.cs</DependentUpon>
     </Compile>
     <Compile Include="BasicWebDbContextMigrations\Configuration.cs" />
     <Compile Include="Common\Constants.cs" />
@@ -201,8 +210,11 @@
       <DependentUpon>201412151623268_InitialCreate3.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\CategoryModel.cs" />
+    <Compile Include="Models\CompanyModel.cs" />
     <Compile Include="Models\EventModel.cs" />
     <Compile Include="Models\NewsModel.cs" />
+    <Compile Include="Models\ProductModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -319,6 +331,11 @@
     <Content Include="Areas\Admin\Views\News\Index.cshtml" />
     <Content Include="Content\themes\flat\arrow-down.xcf" />
     <Content Include="Content\themes\flat\sprite.xcf" />
+    <Content Include="Areas\Admin\Views\Company\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Company\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Company\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Company\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Company\Index.cshtml" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\cazary-legacy.js" />
     <Content Include="Scripts\cazary.js" />
@@ -505,6 +522,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="BasicWebDbContextMigrations\201412161852385_InitialCreate1.resx">
       <DependentUpon>201412161852385_InitialCreate1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicWebDbContextMigrations\201501251749009_AddCompanyTable.resx">
+      <DependentUpon>201501251749009_AddCompanyTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicWebDbContextMigrations\201501251755175_UpdateCompanyTable.resx">
+      <DependentUpon>201501251755175_UpdateCompanyTable.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201412131821094_InitialCreate.resx">
       <DependentUpon>201412131821094_InitialCreate.cs</DependentUpon>
